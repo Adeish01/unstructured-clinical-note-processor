@@ -55,10 +55,6 @@ python app.py
 5. Click "Process Note" to extract structured information
 6. View the results in the interface
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
 ## License
 
 This project is licensed under the MIT License.
