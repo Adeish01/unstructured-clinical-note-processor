@@ -1,0 +1,22 @@
+Note 1:
+patient demographics: Sixteen year-old girl
+chief complaint: Discomfort in the neck and lower back, restriction of body movements, inability to maintain erect posture, sustained contraction of neck muscles.
+history of present illness: The patient developed neck pain and muscle contractions following introduction to olanzapine for bipolar affective disorder. The discomfort and abnormal movements persisted despite changing medications.
+clinical findings: Sustained and abnormal contraction of neck muscles, sideways bending of the back, restricted movements, requires assistance with daily chores.
+imaging findings: MRI scan of the brain did not reveal any abnormalities.
+laboratory results: Serum and urine copper levels normal, slit lamp microscopy for KF ring normal, complete blood count, TLC, DLC, and USG of the abdomen normal. Thyroid function tests deranged with lithium, restored with eltroxin.
+diagnosis: Tardive dystonia induced by olanzapine
+treatment plan: Stopping olanzapine, initiating tetrabenazine (up to 75 mg per day in divided doses), previous use of sodium valproate, escitalopram, propranolol, trihexyphenidyl, phenargan, lithium, and eltroxin.
+outcome: Patient showed improvement in abnormal movements of neck and back with tetrabenazine, reduction in pain and discomfort, able to perform some daily chores.
+
+Note 2:
+patient demographics: 56-year-old man
+chief complaint: Dull pain and swelling on the right back for several weeks.
+history of present illness: Patient was in good health and active state, with a past medical history of a thoracic trauma resulting in a fracture of the 9th right rib one year prior.
+clinical findings: Physical examination was not specifically detailed. General good health state of the patient noted.
+imaging findings: X-ray showed a shadow in the lower part of the right hemithorax. CT scan revealed a thoracic wall tumor in the right hemithorax measuring 8 × 4 cm, with heterogeneous density, involving and destructing the 9th rib, lying in two adjacent intercostal spaces, but not involving the lung and muscular layers. Micronodular infiltrations were seen in both lungs with diameters up to 5mm, and one nodule in the lower lobe of the right lung with a diameter of almost 1 cm. No enlarged lymph nodes in the mediastinum or other lesions in adjacent organs.
+laboratory results: Frozen biopsy of both the lung nodules and the thoracic wall tumor showed no malignant cells.
+diagnosis: Sclerosing xanthofibroma of the thoracic wall and lung nodules.
+treatment plan: Oncologic resection of the tumor of the thoracic wall, resecting three ribs (8th and 10th ribs macroscopically free of tumor), and a plastic procedure with a double layer polypropylene mesh to correct defect.
+outcome: Patient discharged in very good condition after 5 days. No recurrences or new developments noted in thoracic CT-scan two years post-surgery. Patient returned to work one month after surgery.
+
