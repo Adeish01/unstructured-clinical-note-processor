@@ -1,60 +1,59 @@
-# Clinical Note Processor
+# Clinical Notes Visualizer
 
-This project is a web application that processes clinical notes using OpenAI's GPT model to extract structured information from unstructured clinical text.
+This project is a Streamlit application designed to transform unstructured clinical notes into structured, easily readable information using OpenAI's GPT model. It demonstrates the power of AI in processing and organizing complex medical narratives.
 
 ## Features
 
-- Process custom clinical notes
-- Select from a database of example clinical notes
-- Extract structured information from unstructured clinical text
-- User-friendly web interface
+- Input of unstructured clinical notes (custom or example notes)
+- GPT-powered transformation from unstructured text to structured data
+- Visualization of processed notes in an organized, easy-to-read format
+- Demonstration of AI's capability in medical text processing
 
-## Setup Instructions
+## Files
 
-1. Clone the repository:
+1. `app.py`: The main Streamlit application file.
+2. `gpt_medical_info_extractor.py`: Contains functions for processing unstructured clinical notes using GPT.
+3. `clinical_note.py`: Defines the schema for structured clinical notes and processing functions.
+4. `requirements.txt`: Lists all required Python packages for this project.
 
-Copy
+## Setup
 
-Apply
+1. Clone this repository or download the project files.
 
-README.md
-git clone https://github.com/yourusername/clinical-note-processor.git cd clinical-note-processor
+2. Install the required packages using the `requirements.txt` file:   ```
+   pip install -r requirements.txt
+   ```
 
+3. Set up an OpenAI API key and keep it handy.
 
-2. Create a virtual environment and activate it:
-
-Copy
-
-Apply
-
-python -m venv venv source venv/bin/activate # On Windows, use venv\Scripts\activate
-
-
-3. Install the required packages:
-
-pip install -r requirements.txt
-
-
-4. Set up your OpenAI API key:
-- Sign up for an OpenAI account and obtain an API key
-- You'll enter this key in the web interface when processing notes
-
-5. Run the application:
-
-python app.py
-
-
-6. Open a web browser and navigate to `http://localhost:5000`
+4. Run the Streamlit app:   ```
+   streamlit run app.py
+   ```
 
 ## Usage
 
-1. Enter your OpenAI API key in the provided field
-2. Choose between entering a custom note or selecting from database examples
-3. If using a custom note, paste it into the text area
-4. If using database examples, select up to 10 examples
-5. Click "Process Note" to extract structured information
-6. View the results in the interface
+1. Enter your OpenAI API key in the sidebar.
+2. Input a custom unstructured clinical note or load example notes.
+3. Select a note to preview its unstructured format.
+4. Click "Process Selected Note" to transform the unstructured text into structured information.
+5. View the processed information in an organized, easily readable format.
 
-## License
+## How it works
 
-This project is licensed under the MIT License.
+1. Input: The application takes unstructured clinical notes as input. These are typically free-text medical narratives that lack a standardized format.
+
+2. Processing: Using GPT, the app analyzes the unstructured text and extracts relevant medical information.
+
+3. Structuring: The extracted information is organized into predefined categories such as patient demographics, chief complaint, diagnosis, and treatment plan.
+
+4. Output: The structured information is presented in an easy-to-read format, transforming complex medical narratives into clear, organized sections.
+
+This process demonstrates how AI can assist in making medical information more accessible and understandable, potentially improving efficiency in healthcare settings.
+
+## Note
+
+This application is for educational and demonstration purposes only. It should not be used for real medical diagnosis or treatment. Always consult with qualified healthcare professionals for medical advice.
+
+## Created by
+
+This application was created using Streamlit and OpenAI GPT, showcasing the potential of AI in processing and structuring complex medical text.

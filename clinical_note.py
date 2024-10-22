@@ -4,7 +4,7 @@ import json
 
 # Pydantic model for structured clinical notes
 class ClinicalNoteSchema(BaseModel):
-    patient_demographics: str
+    patient_demographics: Optional[str]
     chief_complaint: Optional[str]
     history_of_present_illness: Optional[str]
     clinical_findings: Optional[str]
@@ -32,11 +32,16 @@ def process_structured_info(structured_info: json) -> str:
         "outcome"
     ]
 
+
+
+
     # # Iterate through each field in the structured_info
     for key in keys:
-            key_final = key.replace("_", " ")
-            value = structured_info[key]
-            readable_lines.append(f"{key_final}: {value}")
+        key_final = key.replace("_", " ")
+        value = structured_info[key]
+        readable_lines.append(f"{key_final}: {value}")
+    
+    # Join all lines into a single string
     human_readable_text = "\n".join(readable_lines)
     
     return human_readable_text

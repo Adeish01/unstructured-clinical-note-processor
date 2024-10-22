@@ -1,87 +1,102 @@
-from flask import Flask, render_template, request, jsonify
-from openai import OpenAI
-from datasets import load_dataset
-from clinical_note import ClinicalNoteSchema, process_structured_info
-import json
+import streamlit as st
+import pandas as pd
+from gpt_medical_info_extractor import get_processed_notes, extract_info_from_notes
+from clinical_note import process_structured_info
 
-app = Flask(__name__)
+# Set up the Streamlit page configuration
+st.set_page_config(page_title="Clinical Notes Visualizer", layout="wide")
 
-# Load clinical notes dataset
-print("Loading clinical notes dataset...")
-ds = load_dataset("meowterspace42/clinical_notes")
-print("Dataset loaded successfully.")
+# Display the main title of the app
+st.title("Clinical Notes Visualizer")
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+# Add a description of the app's functionality
+st.markdown("""
+This app is designed to process and visualize custom clinical notes. 
+You can enter your own clinical note in the sidebar and process it using GPT.
+Example notes are provided for testing purposes only.
+""")
 
-@app.route('/get_example/<int:index>')
-def get_example(index):
-    if 0 <= index < len(ds['train']):
-        return jsonify({'content': ds['train'][index]['text']})
-    return jsonify({'error': 'Invalid index'}), 404
+# Create a sidebar for user input and settings
+st.sidebar.header("Settings")
+# Allow user to input their OpenAI API key
+api_key = st.sidebar.text_input("Enter your OpenAI API Key", type="password", value="sk-ip8v4r_2VjIxfqA6EwjWTjENrfcelO-A6m-9J7EuydT3BlbkFJ0lPDFHSPW9ErcEuoDETBEv_liFr03dihNffWvB4PwA")
 
-@app.route('/process', methods=['POST'])
-def process():
-    data = request.json
-    api_key = data.get('api_key')
+# Add a text area for users to input their own clinical notes
+custom_note = st.sidebar.text_area("Enter your own clinical note", height=300, help="Enter your clinical note here for processing")
 
-    client = OpenAI(api_key=api_key)
-    
-    try:
-        client = OpenAI(api_key=api_key)
+# Option to load example notes for testing
+load_examples = st.sidebar.checkbox("Load example notes (for testing only)", value=False)
+num_examples = st.sidebar.number_input("Number of example notes", min_value=1, max_value=10, value=2, disabled=not load_examples)
 
-    except Exception as e:
-        return jsonify({"error": "Invalid API key"}), 401
-
-    if 'custom_note' in data:
-        clinical_note = data['custom_note']
-        structured_info = extract_info_from_notes(client, clinical_note)
-        return jsonify({
-            'unstructured': clinical_note,
-            'structured': process_structured_info(structured_info)
-        })
-    elif 'note_indices' in data:
-        results = []
-        for index in data['note_indices']:
-            clinical_note = ds['train'][index]['text']
-            structured_info = extract_info_from_notes(client, clinical_note)
-            results.append({
-                'unstructured': clinical_note,
-                'structured': process_structured_info(structured_info)
-            })
-        return jsonify({
-            'unstructured': [r['unstructured'] for r in results],
-            'structured': [r['structured'] for r in results]
-        })
+# Function to display a section of the clinical note
+def display_section(title, content):
+    st.subheader(title)
+    if isinstance(content, dict):
+        for key, value in content.items():
+            st.write(f"**{key.capitalize()}:** {value}")
+    elif isinstance(content, list):
+        for item in content:
+            st.write(f"- {item}")
+    elif isinstance(content, str):
+        st.write(content)
     else:
-        return jsonify({'error': 'Invalid request'}), 400
+        st.write("No information available.")
 
-def extract_info_from_notes(client, clinical_note):
-    print("Sending clinical note to OpenAI for processing...")
-    
-    # Use the OpenAI GPT API to generate a response
-    completion = client.beta.chat.completions.parse(
-        model="gpt-4o-2024-08-06",  
-        messages=[
-            {"role": "system", "content": "Extract the clinical information into structured format."},
-            {"role": "user", "content": clinical_note},
-        ],
-        response_format=ClinicalNoteSchema,
-    )   
-    
-    structured_info_JSON = json.loads(completion.choices[0].message.content)
-    print("Received structured information from OpenAI.")
+# Function to display a single processed note
+def display_note(note, index):
+    st.header(f"Note {index}")
 
+    # Define the sections to display
+    sections = [
+        ("Patient Demographics", "patient_demographics"),
+        ("Chief Complaint", "chief_complaint"),
+        ("History of Present Illness", "history_of_present_illness"),
+        ("Clinical Findings", "clinical_findings"),
+        ("Imaging Findings", "imaging_findings"),
+        ("Laboratory Results", "laboratory_results"),
+        ("Diagnosis", "diagnosis"),
+        ("Treatment Plan", "treatment_plan"),
+        ("Outcome", "outcome")
+    ]
 
-    return structured_info_JSON
+    # Display each section of the note
+    for title, key in sections:
+        display_section(title, note.get(key, "No information available."))
 
+    st.markdown("---")
 
+# Get example notes if requested
+example_notes = get_processed_notes(num_examples, api_key, process=False) if load_examples else []
 
-@app.errorhandler(Exception)
-def handle_exception(e):
-    app.logger.error(f"Unhandled exception: {str(e)}")
-    return jsonify({"error": str(e)}), 500
+# Combine example notes with custom note if provided
+all_notes = [custom_note] if custom_note else []
+all_notes.extend(example_notes)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# Display a warning if no notes are available
+if not all_notes:
+    st.warning("Please enter a custom note in the sidebar or load example notes for testing.")
+else:
+    # Create a selectbox for note selection
+    note_options = ["Custom Note"] if custom_note else []
+    note_options.extend([f"Example Note {i+1}" for i in range(len(example_notes))])
+    selected_note_index = st.selectbox("Select a note to preview", range(len(all_notes)), format_func=lambda x: note_options[x])
+
+    # Display the selected note
+    st.subheader("Selected Note Preview")
+    st.text_area("", value=all_notes[selected_note_index], height=300, disabled=True)
+
+    # Process the selected note when the button is clicked
+    if st.button("Process Selected Note"):
+        if not api_key:
+            st.error("Please enter your OpenAI API Key")
+        else:
+            with st.spinner("Processing note..."):
+                try:
+                    processed_note = extract_info_from_notes(all_notes[selected_note_index], api_key)
+                    display_note(processed_note, selected_note_index + 1)
+                except Exception as e:
+                    st.error(f"An error occurred: {str(e)}")
+
+# Add a footer to the sidebar
+st.sidebar.markdown("---")
+st.sidebar.write("Created with Streamlit and OpenAI GPT")
