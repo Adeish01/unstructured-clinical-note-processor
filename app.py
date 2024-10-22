@@ -19,7 +19,7 @@ Example notes are provided for testing purposes only.
 # Create a sidebar for user input and settings
 st.sidebar.header("Settings")
 # Allow user to input their OpenAI API key
-api_key = st.sidebar.text_input("Enter your OpenAI API Key", type="password", value="sk-ip8v4r_2VjIxfqA6EwjWTjENrfcelO-A6m-9J7EuydT3BlbkFJ0lPDFHSPW9ErcEuoDETBEv_liFr03dihNffWvB4PwA")
+api_key = st.sidebar.text_input("Enter your OpenAI API Key", type="password")
 
 # Add a text area for users to input their own clinical notes
 custom_note = st.sidebar.text_area("Enter your own clinical note", height=300, help="Enter your clinical note here for processing")
